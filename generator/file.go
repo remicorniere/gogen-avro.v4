@@ -50,6 +50,10 @@ func (f *File) WriteFile(pkgName, targetFile string) error {
 	if err != nil {
 		return fmt.Errorf("Error formatting file %v - %v\n\nContents: %v", f.name, err, src)
 	}
+	if len(targetFile) > 253 {
+		fmt.Printf("Truncated: %s\n", targetFile)
+		targetFile = targetFile[:250] + ".go"
+	}
 	err = ioutil.WriteFile(targetFile, fileContent, os.ModePerm)
 	if err != nil {
 		return fmt.Errorf("Error writing file %v - %v", f.name, err)
