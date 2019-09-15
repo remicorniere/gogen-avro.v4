@@ -2,6 +2,7 @@ package generator
 
 import (
 	"sort"
+	"strings"
 	"unicode"
 
 	"github.com/serenize/snaker"
@@ -13,16 +14,18 @@ func ToPublicName(name string) string {
 }
 
 func concatSortedMap(m map[string]string, sep string) string {
-	keys := make([]string, 0)
+	keys := make([]string, 0, len(m))
 	for k := range m {
 		keys = append(keys, k)
 	}
+
 	sort.Strings(keys)
-	s := ""
-	for _, k := range keys {
-		s += m[k] + sep
+
+	for n := 0; n < len(m); n++ {
+		keys[n] = m[keys[n]]
 	}
-	return s
+
+	return strings.Join(keys, sep) + sep
 }
 
 // Make filenames snake-case, taken from https://gist.github.com/elwinar/14e1e897fdbe4d3432e1
